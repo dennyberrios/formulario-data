@@ -1,7 +1,10 @@
+import { GlobalStyle } from "./components/UI/GlobalStyles"
+
 function App() {
   return (
     <>
-	app
+    <GlobalStyle />
+     app
     </>
   )
 }
