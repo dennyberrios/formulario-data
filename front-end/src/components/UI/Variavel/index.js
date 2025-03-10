@@ -5,3 +5,5 @@ export const warmSand = "#F2E7DC";
 export const onyxBlack = "#0D0D0D";
 export const coralRed = "#FF6B6B";
 export const pureWhite = "#FFFFFF";
+export const danger = "#ff6b6b";
+export const darkDanger = "#ff4f4f";
