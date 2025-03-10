@@ -6,6 +6,7 @@ export const UserCard = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -15,6 +16,22 @@ export const UserCard = styled.div`
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 `
+
+export const UserTrash = styled.button`
+ position: absolute;
+ right: 0.5rem;
+ top: 0.5rem;
+ color: ${theme.colors.danger};
+ transition: background-color 0.2s ease;
+ cursor: pointer;
+ border: none;
+ background-color: transparent;
+ 
+ svg:hover{
+  color: ${theme.colors.darkDanger};
+  transform: scale(1.1);
+ }
+`;
 
 export const UserInfo = styled.div`
   flex: 1;
@@ -46,9 +63,17 @@ export const ActionButton = styled.button`
   font-weight: 600;
   align-self: flex-end;
   transition: background-color 0.2s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
   &:hover {
     background-color: ${theme.colors.secondary};
     color: ${theme.colors.white};
+  }
+
+  svg {
+    margin-right: 0.2rem;
   }
 `

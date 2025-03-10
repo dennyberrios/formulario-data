@@ -5,22 +5,20 @@ import {
   UserDetail,
   UserInfo,
   UserName,
+  UserTrash,
 } from "./styles";
+import { formatCPF, formatDate } from "../../utils/validation";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { GoPencil } from "react-icons/go";
 
 const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
   const navigate = useNavigate("");
 
-  const formatCPF = (cpf) => {
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR");
-  };
-
   return (
     <UserCard key={id}>
+      <UserTrash onClick={() => alert("User deleted")}>
+        <FaRegTrashAlt size={20}/>
+      </UserTrash>
       <UserInfo>
         <UserName>{name}</UserName>
         <UserDetail>
@@ -33,7 +31,7 @@ const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
           <strong>Date of Birth:</strong> {formatDate(dateOfBirth)}
         </UserDetail>
       </UserInfo>
-      <ActionButton onClick={() => navigate(`/edit/${id}`)}>Edit</ActionButton>
+      <ActionButton onClick={() => navigate(`/edit/${id}`)}><GoPencil size={17}/>Edit</ActionButton>
     </UserCard>
   );
 };
