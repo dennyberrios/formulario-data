@@ -12,6 +12,16 @@ import {
   Button,
   CancelButton,
 } from "./styles";
+import {
+  cleanCPF,
+  formatCPF,
+  validateCPF,
+  validateDateOfBirth,
+  validateEmail,
+  validateForm,
+  validateName,
+  validatePassword,
+} from "../../utils/validation";
 
 const UserInfoForm = () => {
   const navigate = useNavigate("");
@@ -65,73 +75,70 @@ const UserInfoForm = () => {
   const handleChange = (e) => {
     let { name, value } = e.target;
 
-    // Formatação do CPF (XXX.XXX.XXX-XX)
     if (name === "cpf") {
-      value = value.replace(/\D/g, ""); // Remove não numéricos
-      if (value.length <= 3) {
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-      } else if (value.length <= 6) {
-        value = value.replace(/(\d{3})(\d{3})(\d)/, "$1.$2.$3");
-      } else if (value.length <= 9) {
-        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d)/, "$1.$2.$3-$4");
-      }
+      value = cleanCPF(value); // Remove pontos e traço
+      value = formatCPF(value); // Aplica a máscara corretamente
     }
 
     setFormData({ ...formData, [name]: value });
+
+    // Validação do campo alterado, para remover erros individuais
+    const fieldError = validateField(name, value);
+    setErrors({ ...errors, [name]: fieldError });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Name validation
-    if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+  // Função para validar campo individual
+  const validateField = (name, value) => {
+    switch (name) {
+      case "name":
+        return validateName(value);
+      case "email":
+        return validateEmail(value);
+      case "cpf":
+        return validateCPF(value);
+      case "password":
+        return validatePassword(value);
+      case "dateOfBirth":
+        return validateDateOfBirth(value);
+      default:
+        return null;
     }
-
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email inválido";
-    }
-
-    // CPF validation
-    const rawCpf = formData.cpf.replace(/\D/g, ""); // Remove pontuações
-    if (!rawCpf) {
-      newErrors.cpf = "CPF é obrigatório";
-    } else if (rawCpf.length !== 11) {
-      newErrors.cpf = "CPF deve conter 11 dígitos";
-    }
-
-    // Password validation
-    if (!formData.password.trim()) {
-      newErrors.password = "Senha é obrigatória";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "A senha deve ter pelo menos 6 caracteres";
-    }
-
-    // Date of Birth validation
-    if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = "Data de nascimento é obrigatória";
-    } else {
-      const [day, month, year] = formData.dateOfBirth.split("/");
-      const birthDate = new Date(`${year}-${month}-${day}`);
-      if (isNaN(birthDate)) {
-        newErrors.dateOfBirth = "Data de nascimento inválida";
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("📌 formData no handleSubmit:", formData);
 
-    if (validateForm()) {
-      console.log("Formulário válido:", formData);
-      // Aqui você pode chamar a API para enviar os dados
+    if (!formData || Object.keys(formData).length === 0) {
+      console.error("❌ Erro: formData está vazio ou indefinido");
+      return;
     }
+
+    // Realiza a validação e armazena os erros
+    const validationErrors = validateForm(formData);
+
+    if (Object.keys(validationErrors).length > 0) {
+      console.warn("⚠️ Erros de validação:", validationErrors);
+      setErrors(validationErrors);
+      return; // Se houver erros, interrompe o envio
+    }
+
+    // Remove a formatação do CPF antes de enviar
+    const formAttedDate = {
+      ...formData,
+      cpf: cleanCPF(formData.cpf),
+    };
+
+    console.log("✅ Formulário válido:", formAttedDate);
+    navigate("/");
+    // Limpa o formulário após o envio
+    setFormData({
+      name: "",
+      email: "",
+      cpf: "",
+      password: "",
+      dateOfBirth: "",
+    });
   };
 
   return (
