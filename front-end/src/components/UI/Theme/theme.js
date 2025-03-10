@@ -1,5 +1,7 @@
 import {
   coralRed,
+  danger,
+  darkDanger,
   deepTeal,
   emeraldTeal,
   onyxBlack,
@@ -17,6 +19,8 @@ export const theme = {
     text: onyxBlack,
     error: coralRed,
     white: pureWhite,
+    danger: danger,
+    darkDanger: darkDanger,
   },
   breakpoints: {
     mobile: "576px",
