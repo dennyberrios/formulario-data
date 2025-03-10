@@ -34,7 +34,6 @@ const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
         </UserDetail>
       </UserInfo>
       <ActionButton onClick={() => navigate(`/edit/${id}`)}>Edit</ActionButton>
-      <ActionButton onClick={() => navigate(`/edit/${id}`)}>Excluir</ActionButton>
     </UserCard>
   );
 };
