@@ -56,7 +56,7 @@ const UserInfoForm = () => {
 
   useEffect(() => {
     function getUsersById() {
-      const index = id -1;
+      const index = id - 1;
       if (id) {
         setFormData({
           name: users[index].name,
