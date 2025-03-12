@@ -1,32 +1,26 @@
-import CardUser from '../../components/CardUser';
-import { Container, UserGrid } from './styles'
+import { useEffect, useState } from "react";
+import CardUser from "../../components/CardUser";
+import { Container, UserGrid } from "./styles";
+import axios from "axios";
 
 const Home = () => {
-  const users = [
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      cpf: "12345678901",
-      password: "password123",
-      dateOfBirth: "1990-01-01",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      email: "jane@example.com",
-      cpf: "10987654321",
-      password: "password456",
-      dateOfBirth: "1992-05-15",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function getUsers() {
+      const response = await axios.get("http://localhost:3000/users/search");
+      const data = response.data;
+      setUsers(data.result)
+    }
+    getUsers();
+  }, [users]);
 
   return (
     <Container>
       <UserGrid>
         {users.map((user) => (
           <CardUser
-            key={user.id}
+            key={user.id_user}
             id={user.id}
             name={user.name}
             email={user.email}
