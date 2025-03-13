@@ -1,27 +1,18 @@
-import { useEffect, useState } from "react";
-import CardUser from "../../components/CardUser";
+import { useContext } from "react";
 import { Container, UserGrid } from "./styles";
-import axios from "axios";
+import { UserContext } from "../../Context/context";
+import CardUser from "../../components/CardUser";
 
 const Home = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    async function getUsers() {
-      const response = await axios.get("http://localhost:3000/users/search");
-      const data = response.data;
-      setUsers(data.result)
-    }
-    getUsers();
-  }, [users]);
+  const {data} = useContext(UserContext);
 
   return (
     <Container>
       <UserGrid>
-        {users.map((user) => (
+        {data.map((user) => (
           <CardUser
             key={user.id_user}
-            id={user.id}
+            id={user.id_user}
             name={user.name}
             email={user.email}
             cpf={user.cpf}
