@@ -4,22 +4,31 @@ import usersControllers from "../controllers/usersControllers";
 export const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [reloadLayout, setReloadLayout] = useState(false);
 
-    useEffect(() => {
-        async function getUsers() {
-            const response = await usersControllers.getUsers();
-            setData(response.result)
-        }
-        getUsers();
-    }, []);
+  useEffect(() => {
+    async function getUsers() {
+      const response = await usersControllers.getUsers();
+      setData(response.result);
+    }
+    getUsers();
+  }, [reloadLayout]);
 
-    return (
-        <UserContext.Provider value={{
-            data,
-            setData
-        }}>
-        {children}
-        </UserContext.Provider>
-    );
+  async function userDelete(id) {
+    await usersControllers.deleteUser(id);
+  }
+
+  return (
+    <UserContext.Provider
+      value={{
+        data,
+        userDelete,
+        setReloadLayout,
+        reloadLayout,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
