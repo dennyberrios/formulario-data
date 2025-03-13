@@ -1,15 +1,18 @@
 import { GlobalStyle } from "./components/UI/GlobalStyles";
 import RoutesApp from "./routes";
-import { theme } from './components/UI/Theme/theme';
+import { theme } from "./components/UI/Theme/theme";
 import { ThemeProvider } from "styled-components";
+import { UserProvider } from "./Context/context";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <RoutesApp />
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <RoutesApp />
+      </ThemeProvider>
+    </UserProvider>
   );
-}
+};
 
 export default App;
