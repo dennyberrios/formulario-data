@@ -10,14 +10,22 @@ import {
 import { formatCPF, formatDate } from "../../utils/validation";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
+import { useContext } from "react";
+import { UserContext } from "../../Context/context";
 
 const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
   const navigate = useNavigate("");
+  const { userDelete, setReloadLayout, reloadLayout } = useContext(UserContext);
+
+  function deleteCard() {
+    userDelete(id);
+    setReloadLayout(!reloadLayout);
+  }
 
   return (
     <UserCard key={id}>
-      <UserTrash onClick={() => alert("User deleted")}>
-        <FaRegTrashAlt size={20}/>
+      <UserTrash onClick={deleteCard}>
+        <FaRegTrashAlt size={20} />
       </UserTrash>
       <UserInfo>
         <UserName>{name}</UserName>
@@ -31,7 +39,10 @@ const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
           <strong>Date of Birth:</strong> {formatDate(dateOfBirth)}
         </UserDetail>
       </UserInfo>
-      <ActionButton onClick={() => navigate(`/edit/${id}`)}><GoPencil size={17}/>Edit</ActionButton>
+      <ActionButton onClick={() => navigate(`/edit/${id}`)}>
+        <GoPencil size={17} />
+        Edit
+      </ActionButton>
     </UserCard>
   );
 };
