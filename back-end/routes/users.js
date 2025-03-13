@@ -18,4 +18,20 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await querySync(`DELETE FROM users WHERE id_user = ${id}`);
+    res.json({
+      status: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: `Delete user failed: ${error} ${id}`,
+    });
+  }
+});
+
 export default router;
