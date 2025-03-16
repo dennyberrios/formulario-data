@@ -18,6 +18,24 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.post("/add", async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    await querySync(
+      `INSERT INTO users (name, email, password) VALUES ('${name}', '${email}', '${password}')`
+    );
+    res.json({
+      status: true,
+      message: "User added successfully",
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: `Add user failed: ${error}`,
+    });
+  }
+});
+
 router.delete("/delete/:id", async (req, res) => {
   const id = req.params.id;
   try {
