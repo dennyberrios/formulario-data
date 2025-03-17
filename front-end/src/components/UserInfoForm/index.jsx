@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   FormContainer,
@@ -22,29 +22,12 @@ import {
   validateName,
   validatePassword,
 } from "../../utils/validation";
+import { UserContext } from "../../Context/context";
 
 const UserInfoForm = () => {
   const navigate = useNavigate("");
   const { id } = useParams();
-
-  const users = [
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      cpf: "12345678901",
-      password: "password123",
-      dateOfBirth: "1990-01-01",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      email: "jane@example.com",
-      cpf: "10987654321",
-      password: "password456",
-      dateOfBirth: "1992-05-15",
-    },
-  ];
+  const { getUserById } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,15 +38,16 @@ const UserInfoForm = () => {
   });
 
   useEffect(() => {
-    function getUsersById() {
-      const index = id - 1;
+    async function getUsersById() {
+      const response = await getUserById(id);
+      const data = response.result[0];
       if (id) {
         setFormData({
-          name: users[index].name,
-          email: users[index].email,
-          cpf: users[index].cpf,
-          password: users[index].password,
-          dateOfBirth: users[index].dateOfBirth,
+          name: data.name,
+          email: data.email,
+          cpf: data.cpf,
+          password: data.password,
+          dateOfBirth: data.dateOfBirth.split("T")[0],
         });
       }
     }
