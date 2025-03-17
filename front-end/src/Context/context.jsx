@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import usersControllers from "../controllers/usersControllers";
+import UsersControllers from "../controllers/UsersControllers";
 
 export const UserContext = createContext({});
 
@@ -9,14 +9,19 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     async function getUsers() {
-      const response = await usersControllers.getUsers();
+      const response = await UsersControllers.getUsers();
       setData(response.result);
     }
     getUsers();
   }, [reloadLayout]);
 
+  async function getUserById(id) {
+    const response = await UsersControllers.getUsersById(id);
+    return response;
+  }
+
   async function userDelete(id) {
-    await usersControllers.deleteUser(id);
+    await UsersControllers.deleteUser(id);
   }
 
   return (
@@ -26,6 +31,7 @@ export const UserProvider = ({ children }) => {
         userDelete,
         setReloadLayout,
         reloadLayout,
+        getUserById,
       }}
     >
       {children}
