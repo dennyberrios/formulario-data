@@ -23,10 +23,10 @@ class UsersController {
 
   createUser = async (data) => {
     try {
-      const response = await apiControllers.Create(`/users/create`, data);
+      const response = await apiControllers.Create(`/users/add`, data);
       return response;
     } catch (error) {
-      console.error({ MSG: "Error create data:", error });
+      console.error({ MSG: "Error add data:", error });
       throw error;
     }
   };
