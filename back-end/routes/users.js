@@ -36,10 +36,11 @@ router.get("/search/:id", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  const { name, email, password } = req.body;
-  const query = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+  const { name, email, cpf, password, dateOfBirth } = req.body;
+  const query =
+    "INSERT INTO users (name, email, cpf, password, date_account_created, dateOfBirth) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)";
   try {
-    await querySync(query, [name, email, password]);
+    await querySync(query, [name, email, cpf, password, dateOfBirth]);
     res.json({
       status: true,
       message: "User added successfully",
@@ -48,6 +49,25 @@ router.post("/add", async (req, res) => {
     res.json({
       status: false,
       message: `Add user failed: ${error}`,
+    });
+  }
+});
+
+router.put("/update/:id", async (req, res) => {
+  const id = req.params.id;
+  const { name, email, cpf, password, dateOfBirth } = req.body;
+  const query =
+    "UPDATE users SET name = ?, email = ?, cpf = ?, password = ?, dateOfBirth = ? WHERE id_user = ?";
+  try {
+    await querySync(query, [name, email, cpf, password, dateOfBirth, id]);
+    res.json({
+      status: true,
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: `Update user failed: ${error}`,
     });
   }
 });
