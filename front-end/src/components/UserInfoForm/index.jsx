@@ -4,10 +4,6 @@ import {
   FormContainer,
   Title,
   Form,
-  FormGroup,
-  Label,
-  Input,
-  ErrorMessage,
   ButtonGroup,
   Button,
   CancelButton,
@@ -23,11 +19,13 @@ import {
   validatePassword,
 } from "../../utils/validation";
 import { UserContext } from "../../Context/context";
+import InputLabel from "../InputLabel";
 
 const UserInfoForm = () => {
   const navigate = useNavigate("");
   const { id } = useParams();
-  const { getUserById } = useContext(UserContext);
+  const { getUserById, userCreate, userUpdate, setReloadLayout, reloadLayout } =
+    useContext(UserContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -89,9 +87,8 @@ const UserInfoForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("📌 formData no handleSubmit:", formData);
 
     if (!formData || Object.keys(formData).length === 0) {
       console.error("❌ Erro: formData está vazio ou indefinido");
@@ -113,93 +110,91 @@ const UserInfoForm = () => {
       cpf: cleanCPF(formData.cpf),
     };
 
-    console.log("✅ Formulário válido:", formAttedDate);
-    navigate("/");
-    // Limpa o formulário após o envio
-    setFormData({
-      name: "",
-      email: "",
-      cpf: "",
-      password: "",
-      dateOfBirth: "",
-    });
+    try {
+      if (id) {
+        const response = await userUpdate(id, formAttedDate);
+        if (response.status) {
+          navigate("/");
+        } else {
+          console.error("❌ Erro ao atualizar usuário:", response.message);
+        }
+      } else {
+        userCreate(formAttedDate);
+        navigate("/");
+      }
+      // Limpa o formulário após o envio
+      setFormData({
+        name: "",
+        email: "",
+        cpf: "",
+        password: "",
+        dateOfBirth: "",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setReloadLayout(!reloadLayout);
   };
 
   return (
     <FormContainer>
       <Title>{id ? "Update User" : "Register New User"}</Title>
       <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="name">Name</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            $hasError={!!errors.name}
-          />
-          {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
-        </FormGroup>
+        <InputLabel
+          label={"name"}
+          type={"text"}
+          inputId={"name"}
+          inputName={"name"}
+          change={handleChange}
+          value={formData.name}
+          errors={errors.name}
+        />
 
-        <FormGroup>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            $hasError={!!errors.email}
-          />
-          {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-        </FormGroup>
+        <InputLabel
+          label={"Email"}
+          type={"text"}
+          inputId={"email"}
+          inputName={"email"}
+          change={handleChange}
+          value={formData.email}
+          errors={errors.email}
+        />
 
-        <FormGroup>
-          <Label htmlFor="cpf">CPF</Label>
-          <Input
-            type="text"
-            id="cpf"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleChange}
-            maxLength={11}
-            $hasError={!!errors.cpf}
-          />
-          {errors.cpf && <ErrorMessage>{errors.cpf}</ErrorMessage>}
-        </FormGroup>
+        <InputLabel
+          label={"cpf"}
+          type={"text"}
+          inputId={"cpf"}
+          inputName={"cpf"}
+          change={handleChange}
+          value={formData.cpf}
+          errors={errors.cpf}
+          maxLength={11}
+        />
 
-        <FormGroup>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            $hasError={!!errors.password}
-          />
-          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-        </FormGroup>
+        <InputLabel
+          label={"password"}
+          type={"text"}
+          inputId={"password"}
+          inputName={"password"}
+          change={handleChange}
+          value={formData.password}
+          errors={errors.password}
+        />
 
-        <FormGroup>
-          <Label htmlFor="dateOfBirth">Date of Birth</Label>
-          <Input
-            type="date"
-            id="dateOfBirth"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            $hasError={!!errors.dateOfBirth}
-          />
-          {errors.dateOfBirth && (
-            <ErrorMessage>{errors.dateOfBirth}</ErrorMessage>
-          )}
-        </FormGroup>
+        <InputLabel
+          label={"Date of Birth"}
+          type={"date"}
+          inputId={"dateOfBirth"}
+          inputName={"dateOfBirth"}
+          change={handleChange}
+          value={formData.dateOfBirth}
+          errors={errors.dateOfBirth}
+        />
 
         <ButtonGroup>
           <Button type="submit">Register</Button>
-          <CancelButton type="button" onClick={() => navigate("/")}>
+          <CancelButton type="button" onClick={() => navigate("/home")}>
             Cancel
           </CancelButton>
         </ButtonGroup>
