@@ -36,7 +36,7 @@ const CardUser = ({ id, name, email, cpf, dateOfBirth }) => {
           <strong>CPF:</strong> {formatCPF(cpf)}
         </UserDetail>
         <UserDetail>
-          <strong>Date of Birth:</strong> {formatDate(dateOfBirth)}
+          <strong>Date de nasc:</strong> {formatDate(dateOfBirth)}
         </UserDetail>
       </UserInfo>
       <ActionButton onClick={() => navigate(`/edit/${id}`)}>
