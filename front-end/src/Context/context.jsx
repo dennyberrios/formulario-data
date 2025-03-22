@@ -20,6 +20,16 @@ export const UserProvider = ({ children }) => {
     return response;
   }
 
+  async function userCreate(data) {
+    const response = await UsersControllers.createUser(data);
+    return response;
+  }
+
+  async function userUpdate(id, data) {
+    const response = await UsersControllers.updateUser(id, data);
+    return response;
+  }
+
   async function userDelete(id) {
     await UsersControllers.deleteUser(id);
   }
@@ -32,6 +42,8 @@ export const UserProvider = ({ children }) => {
         setReloadLayout,
         reloadLayout,
         getUserById,
+        userCreate,
+        userUpdate,
       }}
     >
       {children}
