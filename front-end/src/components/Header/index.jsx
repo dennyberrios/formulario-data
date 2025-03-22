@@ -1,19 +1,17 @@
-import { Button, ContentHeader, Title } from "./styles";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Button, ButtonGroup, ContentHeader, Title } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate("");
-  const { pathname } = useLocation();
 
   return (
-    <>
-      {pathname === "/" && (
-        <ContentHeader>
-          <Title>Sistema de gestão de usuários</Title>
-          <Button onClick={() => navigate("/register")}>New User</Button>
-        </ContentHeader>
-      )}
-    </>
+    <ContentHeader>
+      <Title>Sistema de gestão de usuários</Title>
+      <ButtonGroup>
+        <Button onClick={() => navigate("/register")}>New User</Button>
+        <Button onClick={() => navigate("/")}>Logout</Button>
+      </ButtonGroup>
+    </ContentHeader>
   );
 };
 
