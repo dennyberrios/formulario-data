@@ -2,6 +2,24 @@ import express from "express";
 import { querySync } from "../mysql.js";
 const router = express.Router();
 
+router.get("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+  try {
+    const data = await querySync(query, [email, password]);
+    res.json({
+      result: data,
+      status: true,
+      message: "Success",
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: `Login failed: ${error}`,
+    });
+  }
+});
+
 router.get("/search", async (req, res) => {
   try {
     const data = await querySync("SELECT * FROM users");
