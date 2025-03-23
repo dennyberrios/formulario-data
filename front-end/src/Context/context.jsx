@@ -20,6 +20,11 @@ export const UserProvider = ({ children }) => {
     return response;
   }
 
+  async function login(data) {
+    const response = await UsersControllers.logintUser(data);
+    return response;
+  }
+
   async function userCreate(data) {
     const response = await UsersControllers.createUser(data);
     return response;
@@ -44,6 +49,7 @@ export const UserProvider = ({ children }) => {
         getUserById,
         userCreate,
         userUpdate,
+        login,
       }}
     >
       {children}
