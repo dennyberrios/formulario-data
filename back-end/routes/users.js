@@ -2,16 +2,24 @@ import express from "express";
 import { querySync } from "../mysql.js";
 const router = express.Router();
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+  const query =
+    "SELECT id_user, name, email, cpf, date_account_created, dateOfBirth FROM users WHERE email = ? AND password = md5(?)";
   try {
     const data = await querySync(query, [email, password]);
-    res.json({
-      result: data,
-      status: true,
-      message: "Success",
-    });
+    if (data.length > 0) {
+      res.json({
+        result: data,
+        status: true,
+        message: "Success",
+      });
+    } else {
+      res.json({
+        status: false,
+        message: "User not found",
+      });
+    }
   } catch (error) {
     res.json({
       status: false,
@@ -56,7 +64,7 @@ router.get("/search/:id", async (req, res) => {
 router.post("/add", async (req, res) => {
   const { name, email, cpf, password, dateOfBirth } = req.body;
   const query =
-    "INSERT INTO users (name, email, cpf, password, date_account_created, dateOfBirth) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)";
+    "INSERT INTO users (name, email, cpf, password, date_account_created, dateOfBirth) VALUES (?, ?, ?, md5(?), CURRENT_TIMESTAMP, ?)";
   try {
     await querySync(query, [name, email, cpf, password, dateOfBirth]);
     res.json({
