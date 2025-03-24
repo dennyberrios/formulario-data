@@ -12,7 +12,6 @@ const Endpoints = () => {
     privat: ["/home"],
     public: ["/", "/register", "/edit/:id"]
   }
-  console.log(head.privat.includes(pathname))
   return (
     <>
       {head.privat.includes(pathname) &&  <Header />}
