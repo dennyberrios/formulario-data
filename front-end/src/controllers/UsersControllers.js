@@ -23,7 +23,7 @@ class UsersController {
 
   logintUser = async (data) => {
     try {
-      const response = await apiControllers.Search(`/users/login`, data);
+      const response = await apiControllers.Create(`/users/login`, data);
       return response;
     } catch (error) {
       console.error({ MSG: "Error get data:", error });
