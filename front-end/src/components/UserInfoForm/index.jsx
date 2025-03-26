@@ -194,7 +194,7 @@ const UserInfoForm = () => {
 
         <ButtonGroup>
           <Button type="submit">Register</Button>
-          <CancelButton type="button" onClick={() => navigate("/home")}>
+          <CancelButton type="button" onClick={() => navigate(id ? "/home" : "/")}>
             Cancel
           </CancelButton>
         </ButtonGroup>
