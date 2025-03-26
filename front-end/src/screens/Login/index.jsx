@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import {
   Button,
   ButtonGroup,
+  ButtonRegister,
   Container,
   Form,
   FormContainer,
@@ -63,7 +64,7 @@ const Login = () => {
         console.log(response.result[0]);
         setReloadLayout(!reloadLayout);
       } else {
-        console.log("Usuário não encontrado");
+        alert("Usuário não encontrado");
       }
     } catch (error) {
       console.error({ MSG: "Error login:", error });
@@ -98,6 +99,7 @@ const Login = () => {
 
           <ButtonGroup>
             <Button type="submit">Entrar</Button>
+            <ButtonRegister to={"/register"}>Cadastrar-se</ButtonRegister>
           </ButtonGroup>
         </Form>
       </FormContainer>

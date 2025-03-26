@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { theme } from "../../components/UI/Theme/theme"
+import { Link } from "react-router-dom"
 
 export const Container = styled.section`
   width: 100%;
@@ -49,7 +50,8 @@ export const Form = styled.form`
 
 export const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
   margin-top: 1rem;
   
@@ -68,9 +70,23 @@ export const Button = styled.button`
   font-weight: 600;
   flex: 1;
   transition: background-color 0.2s ease;
-  max-width: 13rem;
+  width: 13rem;
   
   &:hover {
     background-color: ${theme.colors.secondary};
   }
 `
+
+export const ButtonRegister = styled(Link)`
+  color: ${theme.colors.primary};
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  max-width: 13rem;
+  
+  &:hover {
+    color: ${theme.colors.secondary};
+  }
+`
+
